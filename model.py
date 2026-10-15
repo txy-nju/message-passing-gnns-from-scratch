@@ -16,8 +16,24 @@ def edges_to_coo(edge_list, num_nodes=None):
     num_nodes=(int(edges.max().item())+1 if num_nodes is None else num_nodes)
     return (src,dst,num_nodes)
 
-# Step 2 - add_self_loops (not yet solved)
-# TODO: implement
+# Step 2 - add_self_loops
+def add_self_loops(src, dst, num_nodes):
+    """Append self-loop edges (i, i) for every node to COO edge indices.
+
+    Args:
+        src: LongTensor [E] source node indices.
+        dst: LongTensor [E] destination node indices.
+        num_nodes: int, number of nodes in the graph.
+
+    Returns:
+        src_out: LongTensor [E + num_nodes]
+        dst_out: LongTensor [E + num_nodes]
+    """
+    # TODO: Append self-loop edges (i, i) for every node to the COO tensors
+    nodes=torch.arange(num_nodes)
+    src_out=torch.cat([src,nodes],dim=0)
+    dst_out=torch.cat([dst,nodes],dim=0)
+    return src_out,dst_out
 
 # Step 3 - compute_node_degrees (not yet solved)
 # TODO: implement
