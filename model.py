@@ -35,8 +35,25 @@ def add_self_loops(src, dst, num_nodes):
     dst_out=torch.cat([dst,nodes],dim=0)
     return src_out,dst_out
 
-# Step 3 - compute_node_degrees (not yet solved)
-# TODO: implement
+# Step 3 - compute_node_degrees
+def compute_node_degrees(src, dst, num_nodes, edge_weight=None):
+    """Compute per-node in-degrees (optionally weighted) from COO edges.
+
+    Args:
+        src (LongTensor): Source node indices of shape [E].
+        dst (LongTensor): Destination node indices of shape [E].
+        num_nodes (int): Number of nodes N.
+        edge_weight (FloatTensor, optional): Per-edge weights of shape [E].
+
+    Returns:
+        FloatTensor: In-degrees of shape [N].
+    """
+    # TODO: Compute per-node in-degrees by scattering onto destination nodes
+    degrees=torch.zeros(num_nodes,dtype=torch.float)
+    if edge_weight is None:
+        edge_weight=torch.ones(dst.size(0),dtype=torch.float)
+    degrees.scatter_add_(dim=0,index=dst,src=edge_weight)
+    return degrees
 
 # Step 4 - symmetric_normalize_edge_weights (not yet solved)
 # TODO: implement
