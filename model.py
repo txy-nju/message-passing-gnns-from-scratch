@@ -55,8 +55,32 @@ def compute_node_degrees(src, dst, num_nodes, edge_weight=None):
     degrees.scatter_add_(dim=0,index=dst,src=edge_weight)
     return degrees
 
-# Step 4 - symmetric_normalize_edge_weights (not yet solved)
-# TODO: implement
+# Step 4 - symmetric_normalize_edge_weights
+def symmetric_normalize_edge_weights(src, dst, num_nodes, edge_weight=None):
+    """Compute symmetrically normalized edge weights w_ij / sqrt(d_i * d_j).
+
+    Args:
+        src (LongTensor): Source node indices of shape [E].
+        dst (LongTensor): Destination node indices of shape [E].
+        num_nodes (int): Number of nodes N.
+        edge_weight (FloatTensor, optional): Per-edge weights of shape [E].
+            Defaults to all ones (float32) when None.
+
+    Returns:
+        FloatTensor: Symmetrically normalized weights of shape [E].
+    """
+    # TODO: Compute symmetrically normalized edge weights for GCN-style propagation.
+    if edge_weight is None:
+        edge_weight=torch.ones(dst.size(0),dtype=torch.float)
+    degrees=torch.zeros(num_nodes,dtype=torch.float)
+    degrees.scatter_add_(dim=0,index=dst,src=edge_weight)
+    inv_sqrt=torch.zeros_like(degrees)
+    mask=degrees>0
+    inv_sqrt[mask]=torch.rsqrt(degrees[mask])
+    src_scale=inv_sqrt[src]
+    dst_scale=inv_sqrt[dst]
+    normalized_weight=edge_weight*src_scale*dst_scale
+    return normalized_weight
 
 # Step 5 - gather_source_node_features (not yet solved)
 # TODO: implement
