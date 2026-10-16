@@ -104,8 +104,16 @@ def scatter_sum_to_nodes(edge_features, dst, num_nodes):
     node_features.index_add_(dim=0,index=dst,source=edge_features)
     return node_features
 
-# Step 7 - scatter_mean_to_nodes (not yet solved)
-# TODO: implement
+# Step 7 - scatter_mean_to_nodes
+def scatter_mean_to_nodes(edge_features, dst, num_nodes):
+    # TODO: Scatter-mean edge features onto destination nodes (sum then divide by in-degree).
+    node_features=torch.zeros((num_nodes,edge_features.size(1)),dtype=torch.float)
+    node_features.index_add_(0,index=dst,source=edge_features)
+    degree=torch.zeros(num_nodes,dtype=torch.float)
+    degree.scatter_add_(0,index=dst,src=torch.ones(dst.size(0),dtype=torch.float))
+    degree=degree.clamp_min(1)
+    degree=degree.unsqueeze(1)
+    return node_features/degree
 
 # Step 8 - scatter_max_to_nodes (not yet solved)
 # TODO: implement
