@@ -87,8 +87,22 @@ def gather_source_node_features(node_features, src):
     # TODO: Return edge-aligned source feature rows (E, F) from node_features.
     return node_features[src]
 
-# Step 6 - scatter_sum_to_nodes (not yet solved)
-# TODO: implement
+# Step 6 - scatter_sum_to_nodes
+def scatter_sum_to_nodes(edge_features, dst, num_nodes):
+    """Scatter-sum edge features onto destination nodes to produce per-node aggregated vectors.
+
+    Args:
+        edge_features: FloatTensor of shape (E, F) with one feature row per edge.
+        dst: LongTensor of shape (E,) with destination node index for each edge.
+        num_nodes: int, number of nodes N in the graph.
+
+    Returns:
+        FloatTensor of shape (N, F); row j is the sum of edge features with dst == j.
+    """
+    # TODO: Scatter-sum edge features onto destination nodes to produce per-node vectors
+    node_features=torch.zeros((num_nodes,edge_features.size(1)),dtype=torch.float)
+    node_features.index_add_(dim=0,index=dst,source=edge_features)
+    return node_features
 
 # Step 7 - scatter_mean_to_nodes (not yet solved)
 # TODO: implement
