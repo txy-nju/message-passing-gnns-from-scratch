@@ -123,8 +123,27 @@ def scatter_max_to_nodes(edge_features, dst, num_nodes):
         node_max[dst[i]]=torch.maximum(node_max[dst[i]],edge_features[i])
     return node_max
 
-# Step 9 - compute_messages (not yet solved)
-# TODO: implement
+# Step 9 - compute_messages
+def compute_messages(node_features, src, dst, message_fn, edge_attr=None):
+    """Build per-edge messages via gather + message_fn.
+
+    Args:
+        node_features: FloatTensor of shape (N, F).
+        src: LongTensor of shape (E,) source indices.
+        dst: LongTensor of shape (E,) destination indices.
+        message_fn: callable(src_feats, dst_feats[, edge_attr]) -> messages.
+        edge_attr: optional FloatTensor of shape (E, Fe).
+
+    Returns:
+        messages: FloatTensor of shape (E, M).
+    """
+    # TODO: Build per-edge messages by gathering features and applying message_fn
+    src_feature=node_features[src]
+    dst_feature=node_features[dst]
+    if edge_attr is None:
+        return message_fn(src_feature,dst_feature)
+    else:
+        return message_fn(src_feature,dst_feature,edge_attr)
 
 # Step 10 - aggregate_messages (not yet solved)
 # TODO: implement
