@@ -115,8 +115,13 @@ def scatter_mean_to_nodes(edge_features, dst, num_nodes):
     degree=degree.unsqueeze(1)
     return node_features/degree
 
-# Step 8 - scatter_max_to_nodes (not yet solved)
-# TODO: implement
+# Step 8 - scatter_max_to_nodes
+def scatter_max_to_nodes(edge_features, dst, num_nodes):
+    # TODO: Scatter-max edge features onto destination nodes (elementwise max).
+    node_max=torch.full((num_nodes,edge_features.size(1)),float("-inf"))
+    for i in range(dst.size(0)):
+        node_max[dst[i]]=torch.maximum(node_max[dst[i]],edge_features[i])
+    return node_max
 
 # Step 9 - compute_messages (not yet solved)
 # TODO: implement
