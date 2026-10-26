@@ -321,7 +321,7 @@ def gcn_stack_forward(node_features, src, dst, param_list, activations=None, num
     output=node_features
     all_layer_outputs=[]
     for param,activation in zip(param_list,activations):
-        output=gcn_layer_forward(output,src,dst,num_nodes=num_nodes,weight=param.get("weight"),bias=param.get("bias"),activation=activation)
+        output=gcn_layer_forward(output,src,dst,num_nodes=num_nodes,weight=param["weight"],bias=param.get("bias"),activation=activation)
         all_layer_outputs.append(output)
     return output,all_layer_outputs
 
